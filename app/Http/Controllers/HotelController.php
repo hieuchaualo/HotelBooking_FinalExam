@@ -82,29 +82,29 @@ class HotelController extends Controller
         $slide = DB::table('slide') -> get();
 
         // $new_room  = Room::where('new', 1)->paginate(4);
-        $new_room  = DB::table('rooms') -> where('new', 1)->paginate(4);
+        $room  = DB::table('rooms')->paginate(4);
 
-        $promotion_room = Room::where('promotion_price', '<>', 0)->paginate(4);
+        // $promotion_room = Room::where('promotion_price', '<>', 0)->paginate(4);
 
 
-        return view('page.trangchu', compact('slide', 'new_room', 'promotion_room'));
+        return view('page.homepage', compact('slide', 'room'));
     }
-
-    public function getLoaiSp($type){
-        $sp_theoloai= Room::where('id_type',$type) ->limit(3)->get();
-        $sp_khac= Room::where('id_type','<>',$type)->limit(3)->get();
+    // cho ni chac chia ra 4 loai phong, moi loai phong la 4 room
+    public function getTypeRoom($type){
+        $sp_theoloai= Room::where('id_type',$type) ->limit(4)->paginate(4);
+        // $sp_khac= Room::where('id_type','<>',$type)->limit(3)->paginate(4);
         $loai = TypeRoom::all();
         $loai_sp = TypeRoom::where('id',$type)->first();
 
-        return view('page.loai_sanpham',compact('sp_theoloai', 'sp_khac', 'loai','loai_sp'));
+        return view('page.accommodation',compact('sp_theoloai', 'loai','loai_sp'));
     }
 
     public function getSp(){
         return view('page.chitiet_sanpham');
     }
 
-    public function lienhe(){
-        return view('page.lienhe');
+    public function contact(){
+        return view('page.contact');
     }
 
     public function about(){
@@ -118,10 +118,10 @@ class HotelController extends Controller
         $best_seller  = DB::table('rooms') -> where('new', 2)->paginate(3);
         return view('page.chitiet_sanpham', compact('sanpham', 'sp_tuongtu', 'best_seller', 'new_room'));
     }
-    public function news(){
-        $bangtin = DB::table('news') -> paginate(12);
-        return view('page.news',compact('bangtin'));
-    }
+    // public function news(){
+    //     $bangtin = DB::table('news') -> paginate(12);
+    //     return view('page.news',compact('bangtin'));
+    // }
 
     public function admin(){
         $room  = DB::table('rooms') -> paginate(110);
